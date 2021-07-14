@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>837</title>
+    <style>
+        * {
+            box-sizing: border-box;
+             font-family: Calibri;
+        }
+        .row{
+
+            
+        }
+
+        .column{
+            width : 33.3%;
+            padding: 10px;
+            border: 5px coral;
+            column-count: auto;
+            float: left;
+            border-radius: 4px;
+            
+
+        }
+        div {
+            padding: 10px;
+
+            overflow: hidden;
+            
+        }
+        input[type=text], select {
+            font: 17px Calibri;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type=button]{
+            font: 17px Calibri;
+            width: auto;
+            float: right;
+            cursor: pointer;
+            padding: 7px;
+        }
+    </style>
+</head>
+<body>
+<form>
+<div class = "row">
+    <div class="column"  style="background-color: #f6f6f6">
+        <h3>Member</h3>
+
+    <!--Add few elements to the form-->
+
+    <div>
+        <label for="firstname"></label>
+        <input type="text" id="firstname" name="First Name" placeholder="First Name" maxlength="20" required />
+    </div>
+    <div>
+        <input type="text" id="lastname" name="Last Name" placeholder="Last Name" maxlength="20" required />
+    </div>
+        <div>
+            <input type="text" id="email" name="Email" placeholder="Email" maxlength="40" required />
+        </div>
+        <div>
+            <label for="dob" >Enter your date of birth</label>
+            <input type='date' id="dob" name="Date of Birth" required/>
+        </div>
+        <div>
+            <input type="text" id="address" name="Address" placeholder="Address" maxlength="50" required/>
+        </div>
+    <div>
+        <input type="text" id="city" name="City" placeholder="Enter your City" required />
+    </div>
+        <div>
+            <input type="text" id="pincode" name="Pincode" placeholder="Enter your Pincode" required/>
+        </div>
+    <div>
+        <input type="text" id="State" name="State" placeholder="Enter your State" maxlength="20" required/>
+    </div>
+    <div>
+        <p>Gender</p>
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male" >Male</label><br>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label><br>
+        <input type="radio" id="other" name="gender" value="other">
+        <label for="other">Other</label>
+
+    </div>
+
+
+
+   </div>
+
+
+
+<div class="column", style="background-color: cornsilk";>
+    <h3>Provider</h3>
+    <div>
+        <input type="text" id="providername" name="providername" placeholder="name of Provider" maxlength="50" />
+    </div>
+
+
+    <div>
+        <input type="text" id="renderingprovidernpi" name="Rendering Provider NPI" placeholder="Rendering Provider NPI"/>
+    </div>
+    <div>
+        <input type="text" id="referringprovidernpi" name="Referring Provider NPI" placeholder="Referring Provider NPI"/>
+    </div>
+    <div>
+        <input type="text" id="taxidentificationnumber" name="Tax Identification Number" placeholder="Tax Identification Number"/>
+    </div>
+    <div></div>
+
+</div>
+    <div class="column", style="background-color: #f6f6f6";>
+        <h3>Claims</h3>
+        <div>
+            
+            <input type="text" id="typeofbill" name="Type of Bill" placeholder="Type of Bill"  maxlength="20"/>
+        </div>
+        <div>
+            <input type="text" id="placeofservice" name="Place of Service" placeholder="Place of service" maxlength="20" />
+        </div>
+        <div>
+            <input type="text" id="diagnosiscode" name="Diagnosis Code" placeholder="Diagnosis Code" maxlength="30"/>
+        </div>
+        <div>
+            <input type="text" id="procedurecode" name="Procedure Code" placeholder="Procedure Code" maxlength="30" />
+        </div>
+        <div>
+            <input type="text" id="modifier" name="Modifier" placeholder="Modifier" maxlength="30" />
+        </div>
+        <div>
+            <input type="text" id="charges" name="Charges" placeholder="Charges" maxlength="10" />
+        </div>
+
+    </div>
+    <div>
+        <input type="button" id="bt" value="Save data to file" onclick="saveFile()" />
+    </div>
+</div>
+</form>
+</body>
+
+<script>
+    let today = new Date();        // takes date from browser
+    let dd = today.getDate();      // we have to transform it in format dd-mm-yyyy
+    let mm = today.getMonth()+1; //January is 0 for this function but jan is 1 in human language
+    let yyyy = today.getFullYear();
+    if(dd<10){
+        dd='0'+dd
+    }
+    if(mm<10){
+        mm='0'+mm
+    }
+
+    today = yyyy+'-'+mm+'-'+dd;
+    document.getElementById("dob").setAttribute("max", today);
+    // to set max date to today
+
+    let saveFile = () => {
+
+        // Get the data from each element on the form.
+
+
+        const firstname = document.getElementById('firstname');
+        const lastname = document.getElementById('lastname');
+        const dob = document.getElementById('dob');
+        const address = document.getElementById('address');
+        const city = document.getElementById('city');
+
+        // This variable stores all the data.
+        let data =
+            'ISA*01*0000000000*01*0000000000*ZZ*ABCDEFGHIJKLMNO*ZZ*123456789012345*101127*1719*U*00400*000003438*0*P*>' + '\r\n' +
+            'FN*' + firstname.value + '*99999999999*888888888888*20111219*1340*1377*X*005010X222'+ ' \r\n ' +
+            'Last name: ' +lastname.value + ' \r\n ' +
+            'DOB: ' + dob.value + ' \r\n ' +
+            'Address: ' + address.value + ' \r\n ' +
+            'City: ' + city.value;
+
+        // Convert the text to BLOB.
+        const textToBLOB = new Blob([data], { type: 'text/plain' });
+        const sFileName = 'formData.txt';	   // The file to save the data.
+
+        let newLink = document.createElement("a");
+        newLink.download = sFileName;
+
+        if (window.webkitURL != null) {
+            newLink.href = window.webkitURL.createObjectURL(textToBLOB);
+        }
+        else {
+            newLink.href = window.URL.createObjectURL(textToBLOB);
+            newLink.style.display = "none";
+            document.body.appendChild(newLink);
+        }
+
+        newLink.click();
+    }
+
+
+</script>
+</html>
